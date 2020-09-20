@@ -99,6 +99,21 @@ class Towns {
     }
 
     /**
+     * Walk towns using the given callback function. Useful for full-site reindexing.
+     *
+     * @param func
+     * @returns {Promise<void>}
+     */
+    async walkTowns(func) {
+        const villagerDb = await this.db.get();
+        const cursor = villagerDb.collection(COLLECTION_NAME)
+            .find({});
+        while (await cursor.hasNext()) {
+            await func(await cursor.next());
+        }
+    }
+
+    /**
      * Delete a town by the (username, townId) tuple.
      *
      * @param username the town owner

@@ -1,14 +1,20 @@
 const cache = require('../db/cache');
 
 /**
- * Cache key for the name of the elastic search index.
+ * Cache key for the name of the item and villager elastic search index.
  * @type {string}
  */
 const CACHE_INDEX_NAME = 'elasticSearchIndexName';
 
+/**
+ * Cache key for the name of town elastic search index
+ * @type {string}
+ */
+const TOWN_INDEX_NAME = 'townESIndexName';
 
 module.exports = {
     CACHE_INDEX_NAME: CACHE_INDEX_NAME,
+    TOWN_INDEX_NAME: TOWN_INDEX_NAME,
     getElasticSearchIndexName: async () => {
         return cache.get(CACHE_INDEX_NAME);
     },

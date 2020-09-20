@@ -13,6 +13,8 @@ const urlHelper = require('../helpers/url');
 const sitemap = require('../helpers/sitemap');
 const cache = require('../db/cache');
 
+const townReindexer = require('../db/indexer/towns');
+
 async function generateSitemap() {
     sitemap.generateMap();
 }
@@ -327,9 +329,7 @@ if (process.argv.length !== 3) {
 }
 
 const command = process.argv[2];
-if (!command) {
-    usage();
-} else if (command === 'generate-sitemap') {
+if (command === 'generate-sitemap') {
     generateSitemap()
         .then(() => {
             console.log('Generated new sitemap.');
@@ -360,7 +360,17 @@ if (!command) {
             console.log('Error building redis db.');
             console.error(e);
             process.exit(1);
+        });
+} else if (command === 'build-towns-index') {
+    townReindexer.fullReindex()
+        .then(() => {
+            process.exit(0);
         })
+        .catch((e) => {
+            console.log('Error building town index.');
+            console.error(e);
+            process.exit(1);
+        });
 } else {
     console.error('Invalid command: ' + command);
     process.exit(1);
