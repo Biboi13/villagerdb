@@ -12,7 +12,7 @@
     <div class="form-group">
         <label for="town-name">Town Name</label>
         <input type="text" name="town-name" class="form-control" id="town-name"
-               aria-describedby="town-name-help" placeholder="Enter town name" maxlength={{townNameLength}}
+               aria-describedby="town-name-help" placeholder="Enter town name" maxlength="10"
                {{#if townName}}value="{{townName}}"{{/if}}>
         <small id="list-name-help" class="form-text text-muted">
             Enter the name of your town as shown in-game
@@ -22,7 +22,7 @@
         <label for="town-address">Address</label>
         <input type="text" name="town-address" class="form-control" id="town-address"
                aria-describedby="town-address-help" placeholder="DA-XXXX-XXXX-XXXX"
-               {{#if townAddress}}value="{{townAddress}}"{{/if}}>
+               {{#if townAddress}}value="{{townAddress}}"{{/if}} maxlength="17">
         <small id="town-address-help" class="form-text text-muted">
             Your dream address given to you by Luna. Please include DA-.
         </small>

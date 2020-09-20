@@ -6,20 +6,6 @@ const format = require('../helpers/format');
 const validators = require('../helpers/validators');
 
 /**
- * Minimum name length for a town.
- *
- * @type {number}
- */
-const MIN_TOWN_NAME_LENGTH = 1;
-
-/**
- * Maximum name length for a town.
- *
- * @type {number}
- */
-const MAX_TOWN_NAME_LENGTH = 10;
-
-/**
  * town validation rules for existing towns.
  *
  * @type {ValidationChain[]}
@@ -27,9 +13,9 @@ const MAX_TOWN_NAME_LENGTH = 10;
 const existingTownValidation = [
     body(
         'town-name',
-        'Town names must be between ' + MIN_TOWN_NAME_LENGTH + ' and ' + MAX_TOWN_NAME_LENGTH + ' characters long.')
+        'Town names must be between 1 and 10 characters long.')
         .trim()
-        .isLength({min: MIN_TOWN_NAME_LENGTH, max: MAX_TOWN_NAME_LENGTH}),
+        .isLength({min: 1, max: 10}),
     body(
         'town-name',
         'This town name contains a word or phrase not allowed on the site.')
@@ -82,7 +68,6 @@ function showTownEditForm(req, res, next) {
     data.townId = req.params.townId;
     data.pageTitle = req.params.townId ? 'Edit Town' : 'Add New Town';
     data.errors = req.session.errors;
-    data.townNameLength = MAX_TOWN_NAME_LENGTH;
 
     // Previous submission data, if present
     if (req.session.townSubmitData) {

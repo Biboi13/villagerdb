@@ -26,7 +26,10 @@ async function loadUser(username) {
     // Get towns and sort.
     const userTowns = await towns.findTowns(username);
     userTowns.sort(format.townSortComparator);
-
+    for (let t of userTowns) {
+        t.townTags = t.townTags.join(', ');
+    }
+    
     // Build result out.
     const result = {};
     result.user = user;
