@@ -1,0 +1,26 @@
+{{> rev-unit1 }}
+
+<h1>
+    {{townName}}
+    {{#if isOwnUser}}
+        <a href="/town/edit/{{townId}}"
+           class="btn btn-secondary btn-sm" role="button">
+            <span class="fa fa-edit"></span>
+            Edit
+        </a>
+    {{/if}}
+</h1>
+<p><small class="text-muted">A dream by <a href="/user/{{author}}">{{author}}</a></small></p>
+<div class="text-right">
+    {{> social-media shareUrl=shareUrl showCopyButton=true}}
+</div>
+
+<p>Dream address: <strong>{{townAddress}}</strong></p>
+
+<p>{{   townDescription}}</p>
+
+{{#if townTags}}
+    <p>Tags: {{townTags}}</p>
+{{/if}}
+
+{{> rev-unit2 }}

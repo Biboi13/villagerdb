@@ -8,7 +8,7 @@
         {{msg}}
     </div>
 {{/each}}
-<form method="post" action="/town/create">
+<form method="post" action="{{#if townId}}/town/edit/{{townId}}{{else}}/town/create{{/if}}">
     <div class="form-group">
         <label for="town-name">Town Name</label>
         <input type="text" name="town-name" class="form-control" id="town-name"

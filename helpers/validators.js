@@ -40,7 +40,7 @@ module.exports.townExists = townExists;
 function tagValidator(value) {
     const tags = format.splitAndTrim(value, ',');
     for (let t of tags) {
-        if (!t.match(/^[A-Za-z0-9][A-Za-z0-9 ]+$/i) || !badWords(t)) {
+        if (!t.match(/^[A-Za-z0-9][A-Za-z0-9 \-']+$/) || !badWords(t)) {
             return false; // bad tag name!
         }
     }

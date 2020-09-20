@@ -130,6 +130,34 @@ async function loadList(username, listId, loggedInUser) {
 }
 
 /**
+ * Loads a town.
+ * @param username
+ * @param listId
+ * @returns {Promise<{}|null>}
+ */
+async function loadTown(username, townId) {
+    const result = {};
+    const town = await towns.findTownById(username, townId);
+    if (!town) {
+        return null;
+    }
+
+    result.townId = town.townId;
+    result.townName = town.townName;
+    result.author = username;
+    result.townDescription = town.townDescription;
+    result.townAddress = town.townAddress
+    result.townTags = town.townTags.join(', ');
+    result.shareUrl = 'https://villagerdb.com/user/' + username + '/town/' + town.townId;
+
+    // SEO
+    result.pageTitle = town.townName + ' by ' + username;
+    result.pageDescription = 'View ' + town.townName + ', a dream by ' + username + '.';
+
+    return result;
+}
+
+/**
  * Clean up data for use by the frontend.
  *
  * @param listId
@@ -208,6 +236,24 @@ router.get('/:username/list/:listId', (req, res, next) => {
                 data.isOwnUser = res.locals.userState.isRegistered &&
                     req.user.username === req.params.username;
                 res.render('list', data);
+            }
+        }).catch(next);
+});
+
+/**
+ * Route for town
+ */
+router.get('/:username/town/:townId', (req, res, next) => {
+    loadTown(req.params.username, req.params.townId)
+        .then((data) => {
+            if (!data) {
+                const e = new Error('No such town.');
+                e.status = 404;
+                throw e;
+            } else {
+                data.isOwnUser = res.locals.userState.isRegistered &&
+                    req.user.username === req.params.username;
+                res.render('town', data);
             }
         }).catch(next);
 });
