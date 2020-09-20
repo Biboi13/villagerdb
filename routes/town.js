@@ -182,7 +182,7 @@ router.get('/create', (req, res, next) => {
 /**
  * Route for POSTing new town to the database.
  */
-router.post('/create', newTownValidation, (req, res) => {
+router.post('/create', newTownValidation, (req, res, next) => {
     saveTown(req, res, next);
 });
 

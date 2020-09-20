@@ -1,7 +1,7 @@
 const mongo = require('../mongo');
-const ObjectId = require('mongodb').ObjectID;
 
-const COLLECTION_NAME = 'towns';
+const ENTITY_COLLECTION_NAME = 'towns';
+const EVENT_COLLECTION_NAME = 'townevents';
 
 /**
  * Towns repository.
@@ -30,7 +30,19 @@ class Towns {
      */
     async createTown(username, townId, townName, townAddress, townDescription, townTags) {
         const villagerDb = await this.db.get();
-        await villagerDb.collection(COLLECTION_NAME).insertOne({
+        await villagerDb.collection(ENTITY_COLLECTION_NAME).insertOne({
+            username: username,
+            townId: townId,
+            townName: townName,
+            townAddress: townAddress,
+            townDescription: townDescription,
+            townTags: townTags
+        });
+
+        // For delayed indexer
+        await villagerDb.collection(EVENT_COLLECTION_NAME).insertOne({
+            eventType: 'create',
+            date: new Date(),
             username: username,
             townId: townId,
             townName: townName,
@@ -53,7 +65,7 @@ class Towns {
      */
     async saveTown(username, townId, townName, townAddress, townDescription, townTags) {
         const villagerDb = await this.db.get();
-        await villagerDb.collection(COLLECTION_NAME).updateOne(
+        await villagerDb.collection(ENTITY_COLLECTION_NAME).updateOne(
             {
                 username: username,
                 townId: townId
@@ -66,6 +78,42 @@ class Towns {
                     townTags: townTags
             }
         });
+
+        // For delayed indexer
+        await villagerDb.collection(EVENT_COLLECTION_NAME).insertOne({
+            eventType: 'update',
+            date: new Date(),
+            username: username,
+            townId: townId,
+            townName: townName,
+            townAddress: townAddress,
+            townDescription: townDescription,
+            townTags: townTags
+        });
+    }
+
+    /**
+     * Delete a town by the (username, townId) tuple.
+     *
+     * @param username the town owner
+     * @param townId the town id
+     * @returns {Promise<*>}
+     */
+    async deleteTownById(username, townId) {
+        const villagerDb = await this.db.get();
+        await villagerDb.collection(ENTITY_COLLECTION_NAME)
+            .deleteOne({
+                username: username,
+                townId: townId
+            });
+
+        // For delayed indexer
+        await villagerDb.collection(EVENT_COLLECTION_NAME).insertOne({
+            eventType: 'delete',
+            date: new Date(),
+            username: username,
+            townId: townId
+        });
     }
 
     /**
@@ -77,7 +125,7 @@ class Towns {
      */
     async findTownById(username, townId) {
         const villagerDb = await this.db.get();
-        return villagerDb.collection(COLLECTION_NAME)
+        return villagerDb.collection(ENTITY_COLLECTION_NAME)
             .findOne({
                 username: username,
                 townId: townId
@@ -92,7 +140,7 @@ class Towns {
      */
     async findTowns(username) {
         const villagerDb = await this.db.get();
-        return villagerDb.collection(COLLECTION_NAME)
+        return villagerDb.collection(ENTITY_COLLECTION_NAME)
             .find({
                 username: username,
             }).toArray();
@@ -106,7 +154,7 @@ class Towns {
      */
     async walkTowns(func) {
         const villagerDb = await this.db.get();
-        const cursor = villagerDb.collection(COLLECTION_NAME)
+        const cursor = villagerDb.collection(ENTITY_COLLECTION_NAME)
             .find({});
         while (await cursor.hasNext()) {
             await func(await cursor.next());
@@ -114,18 +162,33 @@ class Towns {
     }
 
     /**
-     * Delete a town by the (username, townId) tuple.
+     * Grabs the requested number of changes in chronological order for reindexing.
      *
-     * @param username the town owner
-     * @param townId the town id
-     * @returns {Promise<*>}
+     * @param batchSize number of changes to grab
+     * @param func walker function
+     * @returns {Promise<void>}
      */
-    async deleteTownById(username, townId) {
+    async walkTownChanges(batchSize, func) {
         const villagerDb = await this.db.get();
-        return villagerDb.collection(COLLECTION_NAME)
+        const cursor = villagerDb.collection(EVENT_COLLECTION_NAME)
+            .find({})
+            .limit(batchSize);
+        while (await cursor.hasNext()) {
+            await func(await cursor.next());
+        }
+    }
+
+    /**
+     * Delete an entry from the town events collection.
+     *
+     * @param changeId
+     * @returns {Promise<void>}
+     */
+    async deleteChange(changeId) {
+        const villagerDb = await this.db.get();
+        await villagerDb.collection(EVENT_COLLECTION_NAME)
             .deleteOne({
-                username: username,
-                townId: townId
+                _id: changeId
             });
     }
 }

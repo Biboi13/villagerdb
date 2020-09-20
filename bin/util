@@ -371,6 +371,16 @@ if (command === 'generate-sitemap') {
             console.error(e);
             process.exit(1);
         });
+} else if (command === 'delta-towns-index') {
+    townReindexer.deltaReindex()
+        .then(() => {
+            process.exit(0);
+        })
+        .catch((e) => {
+            console.log('Error during delta town index.');
+            console.error(e);
+            process.exit(1);
+        });
 } else {
     console.error('Invalid command: ' + command);
     process.exit(1);
