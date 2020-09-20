@@ -2,6 +2,7 @@
 const cron = require('node-cron');
 const birthdays = require('../db/birthdays');
 const siteMap = require('./sitemap');
+const townReindexer = require('../db/indexer/towns');
 
 /**
  * Clears the birthday key in Redis so they get re-computed on next page load.
@@ -28,10 +29,19 @@ const scheduleCrons = () => {
         clearBirthdays();
     });
 
+    // Sitemap generation every day at 3 AM
     cron.schedule('0 3 * * *', () => {
         siteMap.generateMap();
     });
 
+    // Delta town reindex every 5 minutes.
+    cron.schedule('*/5 * * * *', () => {
+        townReindexer.deltaReindex()
+            .catch((e) => {
+                console.log('Unexpected exception while running delta town indexer.');
+                console.error(e);
+            });
+    });
     console.log('Cron schedules submitted.');
 };
 
