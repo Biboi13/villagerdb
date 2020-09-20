@@ -1,6 +1,7 @@
 const express = require('express');
 const config = require('../config/search.js');
 const es = require('../db/elasticsearch');
+const format = require('./format');
 
 const pageSize = config.searchResultsPageSize;
 const allFilters = config.filters;
@@ -264,33 +265,6 @@ function buildAvailableFilters(appliedFilters, aggregations) {
 }
 
 /**
- * Do pagination math.
- *
- * @param pageNumber
- * @param pageSize
- * @param totalCount
- * @param result
- */
-function computePageProperties(pageNumber, pageSize, totalCount, result) {
-    // Totals
-    result.totalCount = totalCount;
-    result.totalPages = Math.ceil(totalCount / pageSize);
-
-    // Clean up page number.
-    if (pageNumber < 1) {
-        pageNumber = 1;
-    } else if (pageNumber > result.totalPages) {
-        pageNumber = result.totalPages;
-    }
-
-    // Pagination specifics
-    result.currentPage = pageNumber;
-    result.startIndex = (pageSize * (pageNumber - 1) + 1);
-    result.endIndex = (pageSize * pageNumber) > totalCount ? totalCount :
-        (pageSize * pageNumber);
-}
-
-/**
  * Load villagers on a particular page number with a particular search query.
  *
  * @param pageNumber the already sanity checked page number
@@ -345,7 +319,7 @@ async function browse(pageNumber, userQueries, fixedQueries) {
     });
 
     // Update page information.
-    computePageProperties(pageNumber, pageSize, totalCount.count, result);
+    format.computePageProperties(pageNumber, pageSize, totalCount.count, result);
 
     result.results = [];
     if (totalCount.count > 0) {
