@@ -20,6 +20,7 @@ const authRouter = require('./routes/auth');
 const userRouter = require('./routes/user');
 const listRouter = require('./routes/list');
 const townRouter = require('./routes/town');
+const townsRouter = require('./routes/towns');
 const randomRouter = require('./routes/random');
 
 const app = express();
@@ -61,6 +62,7 @@ app.use('/auth', authRouter);
 app.use('/list', listRouter);
 app.use('/user', userRouter);
 app.use('/town', townRouter);
+app.use('/towns', townsRouter);
 app.use('/random', randomRouter);
 
 // catch 404 and forward to error handler

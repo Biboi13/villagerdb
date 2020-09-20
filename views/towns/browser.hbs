@@ -1,0 +1,19 @@
+{{> rev-unit1 }}
+<h1>{{pageTitle}}</h1>
+{{#if pageDescription}}
+    <p>{{pageDescription}}</p>
+{{/if}}
+<form class="form" method="get" action="/towns" id="town-search-form">
+    <div class="input-group">
+        <label class="sr-only" for="q">Search for a town by name, tag or description</label>
+        <input type="text" class="form-control" maxlength="64" id="q" name="q"
+               placeholder="Search for a town by name, tag or description" autoComplete="off" value="{{searchQuery}}"/>
+        <span class="input-group-btn">
+            <button class="btn btn-primary" type="submit"><span class="fas fa-search"></span></button>
+        </span>
+    </div>
+</form>
+<div id="towns-browser"
+     data-page-url-prefix="{{pageUrlPrefix}}"
+     data-page-number="{{pageNumber}}"
+     data-search-query="{{searchQuery}}"></div>
