@@ -41,7 +41,7 @@ function deleteHandler(e) {
     const shouldConfirm = $(e.currentTarget).data('shouldconfirm');
 
     if (shouldConfirm) {
-        confirmed = confirm('You are about to delete this list. This cannot be undone!');
+        confirmed = confirm('You are about to delete this. This cannot be undone!');
     }
 
     if (confirmed) {

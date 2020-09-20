@@ -245,6 +245,21 @@ function listSortComparator(a, b) {
 module.exports.listSortComparator = listSortComparator;
 
 /**
+ * Comparator function for sorting towns.
+ * @param a
+ * @param b
+ * @returns {number}
+ */
+function townSortComparator(a, b) {
+    if (getSlug(a.townName) < getSlug(b.townName)) {
+        return -1;
+    } else {
+        return 1;
+    }
+}
+module.exports.townSortComparator = townSortComparator;
+
+/**
  * Comparator function for sorting user list items.
  * @param a
  * @param b
@@ -271,3 +286,27 @@ function listItemSortComparator(a, b) {
     }
 }
 module.exports.listItemSortComparator = listItemSortComparator;
+
+/**
+ * Take an input string and split it up, but clean it along the way so we don't have whitespace all over the place,
+ * so we can keep the spreadsheet human-readable.
+ *
+ * @param data
+ * @param delim
+ * @returns {[]|undefined}
+ */
+function splitAndTrim(data, delim) {
+    if (typeof data !== 'string' || data.trim().length === 0) {
+        return [];
+    }
+
+    data = data.replace(/\s+/g, ' ');
+    const split = data.split(delim);
+    const newSplit = [];
+    for (let s of split) {
+        newSplit.push(s.trim());
+    }
+
+    return newSplit;
+}
+module.exports.splitAndTrim = splitAndTrim;

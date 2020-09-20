@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const users = require('../db/entity/users');
+const towns = require('../db/entity/towns');
 const lists = require('../db/entity/lists');
 const villagers = require('../db/entity/villagers');
 const items = require('../db/entity/items');
@@ -22,13 +23,19 @@ async function loadUser(username) {
     // Sort lists alphabetically
     user.lists.sort(format.listSortComparator);
 
+    // Get towns and sort.
+    const userTowns = await towns.findTowns(username);
+    userTowns.sort(format.townSortComparator);
+
     // Build result out.
     const result = {};
     result.user = user;
     result.pageTitle = user.username + "'s Profile";
     result.username = user.username;
     result.lists = user.lists;
+    result.towns = userTowns;
     result.hasLists = user.lists.length > 0;
+    result.hasTowns = userTowns.length > 0;
     result.shareUrl = 'https://villagerdb.com/user/' + user.username;
     return result;
 }

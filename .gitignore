@@ -106,6 +106,7 @@ typings/
 .DS_Store
 
 # App-specific
+data/badwords.txt
 public/.maintenance
 public/images
 public/javascripts
