@@ -35,7 +35,7 @@ const searchConfig = require('../config/search.js');
  *
  * @type {number}
  */
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 1;
 
 /**
  *
@@ -54,7 +54,7 @@ function callBrowser(req, res, next) {
     const pageNumberInt = sanitize.parsePositiveInteger(pageNumber);
 
     const data = {};
-    data.pageTitle = 'Dream Towns';
+    data.pageTitle = 'Dream Directory';
     data.pageDescription = 'Search for the best dreams to visit at VillagerDB';
     data.pageNumber = pageNumberInt;
     data.searchQuery = req.query.q ? req.query.q : '';

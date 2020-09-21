@@ -7,3 +7,4 @@ import './list-image-gen';
 import './list-search';
 import './lazy-load-img';
 import Browser from './search/browser.js';
+import TownBrowser from './towns/town-browser.js';
