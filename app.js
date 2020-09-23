@@ -1,5 +1,6 @@
 const createError = require('http-errors');
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const path = require('path');
 const logger = require('morgan');
 const hbs = require('express-handlebars');
@@ -39,6 +40,7 @@ app.set('view engine', 'hbs');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(fileUpload());
 
 // Do not send X-Powered-By header.
 app.disable('x-powered-by');

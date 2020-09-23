@@ -1,9 +1,16 @@
 const express = require('express');
+const sharp = require('sharp');
 const router = express.Router();
 const towns = require('../db/entity/towns');
 const {validationResult, body} = require('express-validator');
 const format = require('../helpers/format');
 const validators = require('../helpers/validators');
+
+/**
+ * Max image upload size.
+ * @type {number}
+ */
+const MAX_IMAGE_SIZE = 2 * 1024 * 1024; // 2MB
 
 /**
  * town validation rules for existing towns.
@@ -108,6 +115,49 @@ function showTownEditForm(req, res, next) {
     }
 };
 
+async function validateImages(files, imagesRequired) {
+    if (!files["primary-image"]) {
+        if (imagesRequired) {
+            return {
+                errors: [
+                    {
+                        msg: 'You must upload a primary image for your town.'
+                    }
+                ]
+            }
+        } else {
+            return {};
+        }
+    }
+
+    // Build image array
+    const images = {
+        primary: files['primary-image']
+    }
+    if (files['file[]']) {
+        let counter = 2;
+        for (let i of files['file[]']) {
+            images[counter] = i;
+            counter++;
+        }
+    }
+
+    const result = {};
+    const errors = [];
+    for (let id of Object.keys(images)) {
+        const image = images[id];
+        if (image.size > MAX_IMAGE_SIZE) {
+            errors.push([
+                {
+                    msg: 'Image ' + id + ' is too large. Please upload an image no larger than 2MB.'
+                }
+            ]);
+        }
+    }
+
+    return {};
+}
+
 /**
  * Save new or existing town changes.
  * @param req
@@ -120,7 +170,11 @@ function saveTown(req, res, next) {
         res.redirect('/');
         return;
     }
+
     const errors = validationResult(req);
+
+    // Attempt to save images...
+    const imageResults = validateImages(req.files);
 
     if (!errors.isEmpty()) {
         req.session.errors = errors.array();
