@@ -1,5 +1,4 @@
 const express = require('express');
-const sharp = require('sharp');
 const router = express.Router();
 const towns = require('../db/entity/towns');
 const {validationResult, body} = require('express-validator');
