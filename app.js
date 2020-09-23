@@ -23,6 +23,7 @@ const listRouter = require('./routes/list');
 const townRouter = require('./routes/town');
 const townsRouter = require('./routes/towns');
 const randomRouter = require('./routes/random');
+const imageResizer = require('./routes/images');
 
 const app = express();
 
@@ -66,6 +67,9 @@ app.use('/user', userRouter);
 app.use('/town', townRouter);
 app.use('/towns', townsRouter);
 app.use('/random', randomRouter);
+
+// For image resizing.
+app.use(imageResizer);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
