@@ -170,14 +170,18 @@ async function validateImages(files, imagesRequired, username, townId) {
     }
 
     // Save images to disk in the appropriate folder and return their URLs.
+    const resultImages = [];
     for (let id of Object.keys(images)) {
         try {
+            const newFilename = username + '-' + townId + '-' + images[id].obj.md5 + '.jpg';
             await sharp(images[id].obj.data)
-                .toFile(path.join(TOWN_IMAGE_DIR, username + '-' + townId + '-' + images[id].obj.md5 + '.jpg'));
+                .toFile(path.join(TOWN_IMAGE_DIR, newFilename));
+            resultImages.push(newFilename);
         } catch (e) {
             errors.push({
                 msg: 'Image ' + id + ' could not be saved. Make sure it is a valid JPEG or PNG file.'
             });
+            break;
         }
     }
 
@@ -188,7 +192,8 @@ async function validateImages(files, imagesRequired, username, townId) {
     }
 
     return {
-        errors: []
+        errors: [],
+        images: resultImages
     };
 }
 
@@ -233,14 +238,16 @@ function saveTown(req, res, next) {
                 const townTags = format.splitAndTrim(req.body['town-tags'], ',');
                 if (isNewTown) {
                     // It's a new town
-                    towns.createTown(req.user.username, format.getSlug(townName), townName, townAddress, townDescription, townTags)
+                    towns.createTown(req.user.username, format.getSlug(townName), townName, townAddress,
+                        townDescription, townTags, results.images)
                         .then(() => {
                             res.redirect('/user/' + req.user.username);
                         })
                         .catch(next);
                 } else {
                     // Existing town
-                    towns.saveTown(req.user.username, req.params.townId, townName, townAddress, townDescription, townTags)
+                    towns.saveTown(req.user.username, req.params.townId, townName, townAddress,
+                        townDescription, townTags, results.images)
                         .then(() => {
                             res.redirect('/user/' + req.user.username + '/town/' + req.params.townId);
                         })

@@ -26,9 +26,10 @@ class Towns {
      * @param townAddress the address of the town
      * @param townDescription the description of the town
      * @param townTags tags for the town
+     * @param images array of image filenames for the town
      * @returns {Promise<*>}
      */
-    async createTown(username, townId, townName, townAddress, townDescription, townTags) {
+    async createTown(username, townId, townName, townAddress, townDescription, townTags, images) {
         const villagerDb = await this.db.get();
         await villagerDb.collection(ENTITY_COLLECTION_NAME).insertOne({
             username: username,
@@ -36,7 +37,8 @@ class Towns {
             townName: townName,
             townAddress: townAddress,
             townDescription: townDescription,
-            townTags: townTags
+            townTags: townTags,
+            images: images
         });
 
         // For delayed indexer
@@ -48,7 +50,8 @@ class Towns {
             townName: townName,
             townAddress: townAddress,
             townDescription: townDescription,
-            townTags: townTags
+            townTags: townTags,
+            images: images
         });
     }
 
@@ -61,9 +64,10 @@ class Towns {
      * @param townAddress the new address of the town
      * @param townDescription the new description of the town
      * @param townTags new tags for the town
+     * @param images array of image filenames for the town
      * @returns {Promise<*>}
      */
-    async saveTown(username, townId, townName, townAddress, townDescription, townTags) {
+    async saveTown(username, townId, townName, townAddress, townDescription, townTags, images) {
         const villagerDb = await this.db.get();
         await villagerDb.collection(ENTITY_COLLECTION_NAME).updateOne(
             {
@@ -75,7 +79,8 @@ class Towns {
                     townName: townName,
                     townAddress: townAddress,
                     townDescription: townDescription,
-                    townTags: townTags
+                    townTags: townTags,
+                    images: images
             }
         });
 
@@ -88,7 +93,8 @@ class Towns {
             townName: townName,
             townAddress: townAddress,
             townDescription: townDescription,
-            townTags: townTags
+            townTags: townTags,
+            images: images
         });
     }
 
