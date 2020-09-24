@@ -74,34 +74,33 @@
     </div>
 {{/if}}
 {{#if hasTowns}}
-    {{#each towns}}
-        <div style="max-width: 300px;">
-            <div class="card">
-                <img class="card-img-top" src="/images/towns/medium/{{primaryImage}}" alt="Image for {{townName}}">
-                <div class="card-body">
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <div class="row">
+        {{#each towns}}
+            <div class="col-12 col-md-3 deletable-item">
+                <div class="card">
+                    <img class="card-img-top" src="/images/towns/medium/{{primaryImage}}" alt="Image for {{townName}}">
+                    <div class="card-body">
+                        <h3><a href="/user/{{../username}}/town/{{townId}}">{{townName}}</a></h3>
+                        <div class="card-text">
+                            <p class="text-muted">{{townAddress}}</p>
+                            <p>{{townDescription}}</p>
+                            <p>Tags: {{townTags}}</p>
+                            {{#if ../isOwnUser}}
+                                <div class="text-right">
+                                    <a href="#" data-posturl="/town/delete/{{townId}}" data-shouldconfirm="true"
+                                       class="btn btn-danger delete-object-button" data-delete-target="town-{{townId}}"
+                                       role="button">
+                                        <span class="fa fa-trash"></span>
+                                        <span class="sr-only">Delete</span>
+                                    </a>
+                                </div>
+                            {{/if}}
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    {{/each}}
-    <ul class="list-group user-list-view mb-4">
-        {{#each towns}}
-            <li class="list-group-item d-flex justify-content-between align-items-center deletable-item">
-                <div>
-                    <a href="/user/{{../username}}/town/{{townId}}">{{townName}}</a>
-                    <div class="text-muted">{{townAddress}}</div>
-                    <div class="text-muted">Tags: {{townTags}}</div>
-                </div>
-                {{#if ../isOwnUser}}
-                    <a href="#" data-posturl="/town/delete/{{townId}}" data-shouldconfirm="true"
-                       class="btn btn-danger delete-object-button" role="button">
-                        <span class="fa fa-trash"></span>
-                        <span class="sr-only">Delete</span>
-                    </a>
-                {{/if}}
-            </li>
         {{/each}}
-    </ul>
+    </div>
 {{else}}
     {{#if isOwnUser}}
         <p>
