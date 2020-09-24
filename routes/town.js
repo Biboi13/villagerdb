@@ -1,9 +1,18 @@
 const express = require('express');
+const sharp = require('sharp');
+const path = require('path');
 const router = express.Router();
 const towns = require('../db/entity/towns');
 const {validationResult, body} = require('express-validator');
 const format = require('../helpers/format');
 const validators = require('../helpers/validators');
+
+/**
+ * Where we will save town imagery to disk.
+ *
+ * @type {string}
+ */
+const TOWN_IMAGE_DIR = path.join(process.cwd(), 'public', 'images', 'towns', 'full');
 
 /**
  * Max image upload size.
@@ -81,9 +90,10 @@ function showTownEditForm(req, res, next) {
         data.townAddress = req.session.townSubmitData.townAddress;
         data.townDescription = req.session.townSubmitData.townDescription;
         data.townTags = req.session.townSubmitData.townTags;
+        delete req.session.townSubmitData;
     }
 
-    // Clear previous submission data
+    // Clear previous errors
     delete req.session.errors;
 
     if (res.locals.userState.isRegistered && !req.params.townId) {
@@ -99,9 +109,6 @@ function showTownEditForm(req, res, next) {
                         data.townAddress = town.townAddress;
                         data.townDescription = town.townDescription;
                         data.townTags = town.townTags.join(', ');
-                    } else {
-                        // Clear for next time
-                        delete req.session.townSubmitData;
                     }
                     res.render('edit-town', data);
                 } else {
@@ -114,7 +121,16 @@ function showTownEditForm(req, res, next) {
     }
 };
 
-async function validateImages(files, imagesRequired) {
+function fileProperties(file) {
+    const split = file.name.split('.');
+    const extension = split.length > 0 ? split[split.length - 1] : '';
+    return {
+        obj: file,
+        extension: extension.toLowerCase()
+    };
+}
+
+async function validateImages(files, imagesRequired, username, townId) {
     if (!files["primary-image"]) {
         if (imagesRequired) {
             return {
@@ -124,37 +140,56 @@ async function validateImages(files, imagesRequired) {
                     }
                 ]
             }
-        } else {
-            return {};
         }
     }
 
     // Build image array
     const images = {
-        primary: files['primary-image']
+        primary: fileProperties(files['primary-image'])
     }
     if (files['file[]']) {
         let counter = 2;
         for (let i of files['file[]']) {
-            images[counter] = i;
+            images[counter] = fileProperties(i);
             counter++;
         }
     }
 
-    const result = {};
     const errors = [];
     for (let id of Object.keys(images)) {
         const image = images[id];
-        if (image.size > MAX_IMAGE_SIZE) {
-            errors.push([
-                {
-                    msg: 'Image ' + id + ' is too large. Please upload an image no larger than 2MB.'
-                }
-            ]);
+        if (image.obj.size > MAX_IMAGE_SIZE) {
+            errors.push({
+                msg: 'Image ' + id + ' is too large. Please upload an image no larger than 2MB.'
+            });
+        } else if (image.extension !== 'jpg' && image.extension !== 'jpeg' && image.extension !== 'png') {
+            errors.push({
+                msg: 'Image ' + id + ' is not recognized. Please upload an image in JPEG or PNG format.'
+            });
         }
     }
 
-    return {};
+    // Save images to disk in the appropriate folder and return their URLs.
+    for (let id of Object.keys(images)) {
+        try {
+            await sharp(images[id].obj.data)
+                .toFile(path.join(TOWN_IMAGE_DIR, username + '-' + townId + '-' + images[id].obj.md5 + '.jpg'));
+        } catch (e) {
+            errors.push({
+                msg: 'Image ' + id + ' could not be saved. Make sure it is a valid JPEG or PNG file.'
+            });
+        }
+    }
+
+    if (errors.length > 0) {
+        return {
+            errors: errors
+        };
+    }
+
+    return {
+        errors: []
+    };
 }
 
 /**
@@ -170,44 +205,50 @@ function saveTown(req, res, next) {
         return;
     }
 
-    const errors = validationResult(req);
+    const townId = req.params.townId ? req.params.townId : format.getSlug(req.body['town-name']);
+    const isNewTown = typeof req.params.townId === 'undefined';
+    let errors = validationResult(req).array();
 
     // Attempt to save images...
-    const imageResults = validateImages(req.files);
-
-    if (!errors.isEmpty()) {
-        req.session.errors = errors.array();
-        req.session.townSubmitData = {};
-        req.session.townSubmitData.townName = req.body['town-name'];
-        req.session.townSubmitData.townAddress = req.body['town-address'];
-        req.session.townSubmitData.townDescription = req.body['town-description'];
-        req.session.townSubmitData.townTags = req.body['town-tags'];
-        if (req.params.townId) {
-            res.redirect('/town/edit/' + req.params.townId);
-        } else {
-            res.redirect('/town/create');
-        }
-    } else {
-        const townName = req.body['town-name'];
-        const townAddress = req.body['town-address'];
-        const townDescription = req.body['town-description'];
-        const townTags = format.splitAndTrim(req.body['town-tags'], ',');
-        if (!req.params.townId) {
-            // It's a new town
-            towns.createTown(req.user.username, format.getSlug(townName), townName, townAddress, townDescription, townTags)
-                .then(() => {
-                    res.redirect('/user/' + req.user.username);
-                })
-                .catch(next);
-        } else {
-            // Existing town
-            towns.saveTown(req.user.username, req.params.townId, townName, townAddress, townDescription, townTags)
-                .then(() => {
-                    res.redirect('/user/' + req.user.username + '/town/' + req.params.townId);
-                })
-                .catch(next);
-        }
-    }
+    validateImages(req.files, isNewTown, req.user.username, townId)
+        .then((results) => {
+            // Check if any errors
+            errors = errors.concat(results.errors);
+            if (errors.length > 0) {
+                req.session.errors = errors;
+                req.session.townSubmitData = {};
+                req.session.townSubmitData.townName = req.body['town-name'];
+                req.session.townSubmitData.townAddress = req.body['town-address'];
+                req.session.townSubmitData.townDescription = req.body['town-description'];
+                req.session.townSubmitData.townTags = req.body['town-tags'];
+                if (req.params.townId) {
+                    res.redirect('/town/edit/' + req.params.townId);
+                } else {
+                    res.redirect('/town/create');
+                }
+            } else {
+                const townName = req.body['town-name'];
+                const townAddress = req.body['town-address'];
+                const townDescription = req.body['town-description'];
+                const townTags = format.splitAndTrim(req.body['town-tags'], ',');
+                if (isNewTown) {
+                    // It's a new town
+                    towns.createTown(req.user.username, format.getSlug(townName), townName, townAddress, townDescription, townTags)
+                        .then(() => {
+                            res.redirect('/user/' + req.user.username);
+                        })
+                        .catch(next);
+                } else {
+                    // Existing town
+                    towns.saveTown(req.user.username, req.params.townId, townName, townAddress, townDescription, townTags)
+                        .then(() => {
+                            res.redirect('/user/' + req.user.username + '/town/' + req.params.townId);
+                        })
+                        .catch(next);
+                }
+            }
+        })
+        .catch(next);
 };
 
 /**
