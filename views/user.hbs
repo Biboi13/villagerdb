@@ -10,51 +10,6 @@
     {{> social-media shareUrl=shareUrl showCopyButton=true }}
 </div>
 
-<!-- Towns logic -->
-<h2>Towns</h2>
-{{#if isOwnUser}}
-    <div class="text-right mb-3">
-        <ul class="list-unstyled">
-            <li>
-                <a href="/town/create">
-                    <span class="fas fa-plus"></span>
-                    Add dream town
-                </a>
-            </li>
-        </ul>
-    </div>
-{{/if}}
-{{#if hasTowns}}
-    <ul class="list-group user-list-view mb-4">
-        {{#each towns}}
-            <li class="list-group-item d-flex justify-content-between align-items-center deletable-item">
-                <div>
-                    <a href="/user/{{../username}}/town/{{townId}}">{{townName}}</a>
-                    <div class="text-muted">{{townAddress}}</div>
-                    <div class="text-muted">Tags: {{townTags}}</div>
-                </div>
-                {{#if ../isOwnUser}}
-                    <a href="#" data-posturl="/town/delete/{{townId}}" data-shouldconfirm="true"
-                       class="btn btn-danger delete-object-button" role="button">
-                        <span class="fa fa-trash"></span>
-                        <span class="sr-only">Delete</span>
-                    </a>
-                {{/if}}
-            </li>
-        {{/each}}
-    </ul>
-{{else}}
-    {{#if isOwnUser}}
-        <p>
-            You have not added your dream towns yet. You can add one by using the <span class="fas fa-plus"></span> link on
-            the top right, or
-            <a href="/town/create">clicking here</a>.
-        </p>
-    {{else}}
-        <p>This user has not added their dream addresses yet.</p>
-    {{/if}}
-{{/if}}
-
 <!-- Lists logic -->
 <h2>Lists</h2>
 {{#if isOwnUser}}
@@ -101,6 +56,61 @@
         </p>
     {{else}}
         <p>This user has not created any lists yet.</p>
+    {{/if}}
+{{/if}}
+
+<!-- Towns logic -->
+<h2>Towns</h2>
+{{#if isOwnUser}}
+    <div class="text-right mb-3">
+        <ul class="list-unstyled">
+            <li>
+                <a href="/town/create">
+                    <span class="fas fa-plus"></span>
+                    Add dream town
+                </a>
+            </li>
+        </ul>
+    </div>
+{{/if}}
+{{#if hasTowns}}
+    {{#each towns}}
+        <div style="max-width: 300px;">
+            <div class="card">
+                <img class="card-img-top" src="/images/towns/medium/{{primaryImage}}" alt="Image for {{townName}}">
+                <div class="card-body">
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+            </div>
+        </div>
+    {{/each}}
+    <ul class="list-group user-list-view mb-4">
+        {{#each towns}}
+            <li class="list-group-item d-flex justify-content-between align-items-center deletable-item">
+                <div>
+                    <a href="/user/{{../username}}/town/{{townId}}">{{townName}}</a>
+                    <div class="text-muted">{{townAddress}}</div>
+                    <div class="text-muted">Tags: {{townTags}}</div>
+                </div>
+                {{#if ../isOwnUser}}
+                    <a href="#" data-posturl="/town/delete/{{townId}}" data-shouldconfirm="true"
+                       class="btn btn-danger delete-object-button" role="button">
+                        <span class="fa fa-trash"></span>
+                        <span class="sr-only">Delete</span>
+                    </a>
+                {{/if}}
+            </li>
+        {{/each}}
+    </ul>
+{{else}}
+    {{#if isOwnUser}}
+        <p>
+            You have not added your dream towns yet. You can add one by using the <span class="fas fa-plus"></span> link on
+            the top right, or
+            <a href="/town/create">clicking here</a>.
+        </p>
+    {{else}}
+        <p>This user has not added their dream addresses yet.</p>
     {{/if}}
 {{/if}}
 

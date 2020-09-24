@@ -26,6 +26,12 @@ const RESIZE_RULES = {
             width: 200,
             height: 200
         }
+    },
+    towns: {
+        medium: {
+            width: 300,
+            height: 300
+        }
     }
 };
 
