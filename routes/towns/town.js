@@ -2,10 +2,10 @@ const express = require('express');
 const sharp = require('sharp');
 const path = require('path');
 const router = express.Router();
-const towns = require('../db/entity/towns');
 const {validationResult, body} = require('express-validator');
-const format = require('../helpers/format');
-const validators = require('../helpers/validators');
+const towns = require('../../db/entity/towns');
+const format = require('../../helpers/format');
+const validators = require('../../helpers/validators');
 
 /**
  * Where we will save town imagery to disk.

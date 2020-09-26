@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
-const lists = require('../db/entity/lists');
-const items = require('../db/entity/items');
+const lists = require('../../db/entity/lists');
+const items = require('../../db/entity/items');
 const {validationResult, body} = require('express-validator');
-const format = require('../helpers/format');
+const format = require('../../helpers/format');
 
 /**
  * Minimum name length for a list.

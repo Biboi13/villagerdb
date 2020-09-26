@@ -2,8 +2,8 @@ const moment = require('moment');
 const { check, validationResult, body } = require('express-validator');
 const express = require('express');
 const router = express.Router();
-const passport = require('../config/passport');
-const users = require('../db/entity/users');
+const passport = require('../../config/passport');
+const users = require('../../db/entity/users');
 
 /**
  * Terminates the session and deletes the user from the database.

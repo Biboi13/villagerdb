@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const cms = require('./admin/cms');
-const pages = require('../db/entity/cms-pages');
+const cms = require('./cms');
+const pages = require('../../db/entity/cms-pages');
 
 /**
  * Admin role name in database.

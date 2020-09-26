@@ -1,5 +1,4 @@
 {{> rev-unit1 }}
-
 <h1>
     {{townName}}
     {{#if isOwnUser}}
@@ -14,13 +13,9 @@
 <div class="text-right">
     {{> social-media shareUrl=shareUrl showCopyButton=true}}
 </div>
-
 <p>Dream address: <strong>{{townAddress}}</strong></p>
-
-<p>{{   townDescription}}</p>
-
+<p>{{townDescription}}</p>
 {{#if townTags}}
     <p>Tags: {{townTags}}</p>
 {{/if}}
-
 {{> rev-unit2 }}

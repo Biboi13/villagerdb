@@ -7,28 +7,28 @@ const express = require('express');
 /**
  * Sanitizer.
  */
-const sanitize = require('../helpers/sanitize');
+const sanitize = require('../../helpers/sanitize');
 
 /**
  * Format helpers
  */
-const format = require('../helpers/format');
+const format = require('../../helpers/format');
 
 /**
  * ElasticSearch
  * @type {es.Client}
  */
-const es = require('../db/elasticsearch');
+const es = require('../../db/elasticsearch');
 
 /**
  * Cache system
  */
-const cache = require('../db/cache');
+const cache = require('../../db/cache');
 
 /**
  * Search configuration
  */
-const searchConfig = require('../config/search.js');
+const searchConfig = require('../../config/search.js');
 
 /**
  * Number of towns per page.

@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const users = require('../db/entity/users');
-const towns = require('../db/entity/towns');
-const lists = require('../db/entity/lists');
-const villagers = require('../db/entity/villagers');
-const items = require('../db/entity/items');
-const format = require('../helpers/format');
-const consts = require('../helpers/consts');
+const users = require('../../db/entity/users');
+const towns = require('../../db/entity/towns');
+const lists = require('../../db/entity/lists');
+const villagers = require('../../db/entity/villagers');
+const items = require('../../db/entity/items');
+const format = require('../../helpers/format');
+const consts = require('../../helpers/consts');
 
 /**
  * Load user profile.
@@ -257,7 +257,7 @@ router.get('/:username/town/:townId', (req, res, next) => {
             } else {
                 data.isOwnUser = res.locals.userState.isRegistered &&
                     req.user.username === req.params.username;
-                res.render('town/view', data);
+                res.render('towns/view', data);
             }
         }).catch(next);
 });

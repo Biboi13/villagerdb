@@ -1,7 +1,7 @@
 const express = require('express');
 const moment = require('moment');
-const format = require('../helpers/format.js');
-const villagers = require('../db/entity/villagers');
+const format = require('../../helpers/format.js');
+const villagers = require('../../db/entity/villagers');
 
 /**
  * Format a villager for user display.

@@ -13,7 +13,7 @@ const browse = require('./abstract-browser');
 /**
  * Sanitizer.
  */
-const sanitize = require('../helpers/sanitize');
+const sanitize = require('../../helpers/sanitize');
 
 /**
  * Invokes the browser.

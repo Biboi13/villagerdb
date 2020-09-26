@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const config = require('../config/search.js');
-const es = require('../db/elasticsearch');
+const config = require('../../config/search.js');
+const es = require('../../db/elasticsearch');
 
 router.get('/', function (req, res, next) {
     // Validate query

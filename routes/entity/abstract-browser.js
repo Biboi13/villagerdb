@@ -2,18 +2,18 @@
  * App config.
  * @type {{}}
  */
-const config = require('../config/search');
+const config = require('../../config/search');
 
 /**
  *
  * @type {browse}
  */
-const browser = require('../helpers/browser');
+const browser = require('../../helpers/browser');
 
 /**
  * Sanitizer.
  */
-const sanitize = require('../helpers/sanitize');
+const sanitize = require('../../helpers/sanitize');
 
 /**
  * Clean up input from frontend by making sure it matches a known filter and does not exceed the max string length.

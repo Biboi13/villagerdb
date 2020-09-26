@@ -7,7 +7,7 @@ const express = require('express');
 /**
  * Formatter.
  */
-const format = require('../helpers/format');
+const format = require('../../helpers/format');
 
 /**
  *
@@ -18,7 +18,7 @@ const browse = require('./abstract-browser');
 /**
  * Sanitizer.
  */
-const sanitize = require('../helpers/sanitize');
+const sanitize = require('../../helpers/sanitize');
 
 /**
  * Bushes and trees are used twice - once at /bushes and again at /bushes-trees

@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const cache = require('../db/cache');
-const repo = require('../db/entity/cms-pages');
-const config = require('../config/common');
+const cache = require('../../db/cache');
+const repo = require('../../db/entity/cms-pages');
+const config = require('../../config/common');
 
 /* get page */
 router.get('/:pageId', function(req, res, next) {

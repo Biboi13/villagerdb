@@ -10,21 +10,21 @@ const session = require('./config/session/middleware');
 const appState = require('./helpers/middleware/app-state');
 
 // Routers
-const adminRouter = require('./routes/admin');
+const adminRouter = require('./routes/admin/admin');
 const indexRouter = require('./routes/index');
-const autocompleteRouter = require('./routes/autocomplete');
-const searchRouter = require('./routes/search');
-const villagerRouter = require('./routes/villager');
-const villagersRouter = require('./routes/villagers');
-const itemRouter = require('./routes/item');
-const itemsRouter = require('./routes/items');
-const authRouter = require('./routes/auth');
-const userRouter = require('./routes/user');
-const listRouter = require('./routes/list');
-const townRouter = require('./routes/town');
-const townsRouter = require('./routes/towns');
-const randomRouter = require('./routes/random');
-const cmsRouter = require('./routes/cms');
+const autocompleteRouter = require('./routes/entity/autocomplete');
+const searchRouter = require('./routes/entity/search');
+const villagerRouter = require('./routes/entity/villager');
+const villagersRouter = require('./routes/entity/villagers');
+const itemRouter = require('./routes/entity/item');
+const itemsRouter = require('./routes/entity/items');
+const authRouter = require('./routes/users/auth');
+const userRouter = require('./routes/users/user');
+const listRouter = require('./routes/lists/list');
+const townRouter = require('./routes/towns/town');
+const townsRouter = require('./routes/towns/towns');
+const randomRouter = require('./routes/entity/random');
+const cmsRouter = require('./routes/cms/cms');
 const imageResizer = require('./routes/images');
 
 const app = express();

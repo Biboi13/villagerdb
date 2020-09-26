@@ -1,6 +1,6 @@
 const express = require('express');
-const format = require('../helpers/format.js');
-const items = require('../db/entity/items');
+const format = require('../../helpers/format.js');
+const items = require('../../db/entity/items');
 
 /**
  * Get values for a specified currency from a game object's list of prices. The result is not sorted.
