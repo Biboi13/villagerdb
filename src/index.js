@@ -1,10 +1,10 @@
 import 'bootstrap';
-import './awake-times';
-import './click-actions';
-import './birthdays';
-import './search/autocomplete';
-import './list-image-gen';
-import './list-search';
-import './lazy-load-img';
-import Browser from './search/browser.js';
+import './common/click-actions';
+import './common/lazy-load-img';
+import './entity/awake-times';
+import './entity/birthdays';
+import './entity/autocomplete';
+import './entity/list-image-gen';
+import './entity/list-search';
+import Browser from './entity/browser.js';
 import TownBrowser from './towns/town-browser.js';

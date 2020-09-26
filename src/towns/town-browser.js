@@ -2,8 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom"
 import $ from 'jquery'
 
-import Paginator from '../search/paginator.js';
-import Loader from '../search/loader.js';
+import Paginator from '../common/paginator.js';
+import Loader from '../common/loader.js';
 
 /**
  *

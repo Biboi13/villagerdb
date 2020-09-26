@@ -2,9 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom"
 import $ from 'jquery'
 
-import Paginator from './paginator.js';
+import Loader from '../common/loader.js';
+import Paginator from '../common/paginator.js';
 import SearchResults from './search-results.js';
-import Loader from './loader.js';
 import FilterList from './filter-list.js';
 import AppliedFilters from './applied-filters.js';
 
