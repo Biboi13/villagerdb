@@ -10,6 +10,7 @@ const session = require('./config/session/middleware');
 const appState = require('./helpers/middleware/app-state');
 
 // Routers
+const adminRouter = require('./routes/admin');
 const indexRouter = require('./routes/index');
 const autocompleteRouter = require('./routes/autocomplete');
 const searchRouter = require('./routes/search');
@@ -23,6 +24,7 @@ const listRouter = require('./routes/list');
 const townRouter = require('./routes/town');
 const townsRouter = require('./routes/towns');
 const randomRouter = require('./routes/random');
+const cmsRouter = require('./routes/cms');
 const imageResizer = require('./routes/images');
 
 const app = express();
@@ -53,7 +55,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(appState);
 
-// Router setup.
+// Set up admin router but fail if we can't.
+if (!process.env.ADMIN_URL_KEY) {
+    throw new Error('You must set ADMIN_URL_KEY in .env or I will not start.');
+} else {
+    app.use('/' + process.env.ADMIN_URL_KEY, adminRouter);
+}
+
+// Other routers setup.
 app.use('/', indexRouter);
 app.use('/autocomplete', autocompleteRouter);
 app.use('/search', searchRouter);
@@ -67,6 +76,7 @@ app.use('/user', userRouter);
 app.use('/town', townRouter);
 app.use('/towns', townsRouter);
 app.use('/random', randomRouter);
+app.use('/cms', cmsRouter);
 
 // For image resizing.
 app.use(imageResizer);
