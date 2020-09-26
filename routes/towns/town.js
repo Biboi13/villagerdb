@@ -3,6 +3,7 @@ const sharp = require('sharp');
 const path = require('path');
 const router = express.Router();
 const {validationResult, body} = require('express-validator');
+const config = require('../../config/common');
 const towns = require('../../db/entity/towns');
 const format = require('../../helpers/format');
 const validators = require('../../helpers/validators');
@@ -33,14 +34,18 @@ const existingTownValidation = [
         .isLength({min: 1, max: 10}),
     body(
         'town-name',
+        'town names can only have letters, numbers, and spaces, and must start with a letter or number.')
+        .matches(config.NAME_ID_REGEX),
+    body(
+        'town-name',
         'This town name contains a word or phrase not allowed on the site.')
         .trim()
         .custom(validators.badWords),
     body(
         'town-description',
-        'Please provide a description of your town.')
+        'Please provide a description of your town between 3 and 4096 characters long.')
         .trim()
-        .isLength({min: 3}),
+        .isLength({min: 3, max: 4096}),
     body(
         'town-description',
         'Your town description contains a word or phrase not allowed on the site.')
@@ -70,6 +75,108 @@ const newTownValidation = [
         .trim()
         .custom(validators.townExists),
 ].concat(existingTownValidation);
+
+/**
+ * Gather up some properties about the file.
+ *
+ * @param file
+ * @returns {{extension: string, obj: *}}
+ */
+function fileProperties(file) {
+    return {
+        obj: file,
+        extension: path.extname(file.name).toLowerCase()
+    };
+}
+
+/**
+ * Make sure we save all tags in lowercase.
+ * @param tags
+ * @returns {*}
+ */
+function lowerCaseTags(tags) {
+    for (let i = 0; i < tags.length; i++) {
+        tags[i] = tags[i].toLowerCase();
+    }
+
+    return tags;
+}
+
+/**
+ * Verify images for upload.
+ *
+ * @param files
+ * @param imagesRequired
+ * @param username
+ * @param townId
+ * @returns {Promise<{errors: []}|{images: [], errors: []}|{errors: [{msg: string}]}>}
+ */
+async function validateImages(files, imagesRequired, username, townId) {
+    if (!files["primary-image"]) {
+        if (imagesRequired) {
+            return {
+                errors: [
+                    {
+                        msg: 'You must upload a primary image for your town.'
+                    }
+                ]
+            }
+        }
+    }
+
+    // Build image array
+    const images = {
+        primary: fileProperties(files['primary-image'])
+    }
+    if (files['file[]']) {
+        let counter = 2;
+        for (let i of files['file[]']) {
+            images[counter] = fileProperties(i);
+            counter++;
+        }
+    }
+
+    const errors = [];
+    for (let id of Object.keys(images)) {
+        const image = images[id];
+        if (image.obj.size > MAX_IMAGE_SIZE) {
+            errors.push({
+                msg: 'Image ' + id + ' is too large. Please upload an image no larger than 2MB.'
+            });
+        } else if (image.extension !== '.jpg' && image.extension !== '.jpeg' && image.extension !== '.png') {
+            errors.push({
+                msg: 'Image ' + id + ' is not recognized. Please upload an image in JPEG or PNG format.'
+            });
+        }
+    }
+
+    // Save images to disk in the appropriate folder and return their URLs.
+    const resultImages = [];
+    for (let id of Object.keys(images)) {
+        try {
+            const newFilename = username + '-' + townId + '-' + images[id].obj.md5 + '.jpg';
+            await sharp(images[id].obj.data)
+                .toFile(path.join(TOWN_IMAGE_DIR, newFilename));
+            resultImages.push(newFilename);
+        } catch (e) {
+            errors.push({
+                msg: 'Image ' + id + ' could not be saved. Make sure it is a valid JPEG or PNG file.'
+            });
+            break;
+        }
+    }
+
+    if (errors.length > 0) {
+        return {
+            errors: errors
+        };
+    }
+
+    return {
+        errors: [],
+        images: resultImages
+    };
+}
 
 /**
  * Create or edit town form.
@@ -121,82 +228,6 @@ function showTownEditForm(req, res, next) {
     }
 };
 
-function fileProperties(file) {
-    const split = file.name.split('.');
-    const extension = split.length > 0 ? split[split.length - 1] : '';
-    return {
-        obj: file,
-        extension: extension.toLowerCase()
-    };
-}
-
-async function validateImages(files, imagesRequired, username, townId) {
-    if (!files["primary-image"]) {
-        if (imagesRequired) {
-            return {
-                errors: [
-                    {
-                        msg: 'You must upload a primary image for your town.'
-                    }
-                ]
-            }
-        }
-    }
-
-    // Build image array
-    const images = {
-        primary: fileProperties(files['primary-image'])
-    }
-    if (files['file[]']) {
-        let counter = 2;
-        for (let i of files['file[]']) {
-            images[counter] = fileProperties(i);
-            counter++;
-        }
-    }
-
-    const errors = [];
-    for (let id of Object.keys(images)) {
-        const image = images[id];
-        if (image.obj.size > MAX_IMAGE_SIZE) {
-            errors.push({
-                msg: 'Image ' + id + ' is too large. Please upload an image no larger than 2MB.'
-            });
-        } else if (image.extension !== 'jpg' && image.extension !== 'jpeg' && image.extension !== 'png') {
-            errors.push({
-                msg: 'Image ' + id + ' is not recognized. Please upload an image in JPEG or PNG format.'
-            });
-        }
-    }
-
-    // Save images to disk in the appropriate folder and return their URLs.
-    const resultImages = [];
-    for (let id of Object.keys(images)) {
-        try {
-            const newFilename = username + '-' + townId + '-' + images[id].obj.md5 + '.jpg';
-            await sharp(images[id].obj.data)
-                .toFile(path.join(TOWN_IMAGE_DIR, newFilename));
-            resultImages.push(newFilename);
-        } catch (e) {
-            errors.push({
-                msg: 'Image ' + id + ' could not be saved. Make sure it is a valid JPEG or PNG file.'
-            });
-            break;
-        }
-    }
-
-    if (errors.length > 0) {
-        return {
-            errors: errors
-        };
-    }
-
-    return {
-        errors: [],
-        images: resultImages
-    };
-}
-
 /**
  * Save new or existing town changes.
  * @param req
@@ -235,7 +266,7 @@ function saveTown(req, res, next) {
                 const townName = req.body['town-name'];
                 const townAddress = req.body['town-address'];
                 const townDescription = req.body['town-description'];
-                const townTags = format.splitAndTrim(req.body['town-tags'], ',');
+                const townTags = lowerCaseTags(format.splitAndTrim(req.body['town-tags'], ','));
                 if (isNewTown) {
                     // It's a new town
                     towns.createTown(req.user.username, format.getSlug(townName), townName, townAddress,

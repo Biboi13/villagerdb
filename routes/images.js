@@ -28,6 +28,10 @@ const RESIZE_RULES = {
         }
     },
     towns: {
+        thumb: {
+            width: 300,
+            height: 300
+        },
         medium: {
             width: 300,
             height: 300

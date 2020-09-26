@@ -36,6 +36,7 @@ const handlebars = hbs.create({
     defaultLayout: 'main',
     layoutsDir: __dirname + '/views/layouts/',
     partialsDir: __dirname + '/views/partials/',
+    helpers: require('./helpers/handlebars.js')
 });
 app.engine('hbs', handlebars.engine);
 app.set('view engine', 'hbs');

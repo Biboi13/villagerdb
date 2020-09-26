@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
+const config = require('../../config/common');
 const lists = require('../../db/entity/lists');
 const items = require('../../db/entity/items');
 const {validationResult, body} = require('express-validator');
@@ -21,13 +22,6 @@ const minListNameLength = 3;
 const maxListNameLength = 25;
 
 /**
- * Validation expression for a list name.
- *
- * @type {RegExp}
- */
-const listRegex = /^[A-Za-z0-9][A-Za-z0-9 ]+$/i;
-
-/**
  * List validation rules on name submission.
  *
  * @type {ValidationChain[]}
@@ -40,7 +34,7 @@ const listValidation = [
     body(
         'list-name',
         'List names can only have letters, numbers, and spaces, and must start with a letter or number.')
-        .matches(listRegex),
+        .matches(config.NAME_ID_REGEX),
     body(
         'list-name',
         'You already have a list by that name. Please choose another name.')

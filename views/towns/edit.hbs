@@ -17,7 +17,8 @@
                aria-describedby="town-name-help" placeholder="Enter town name" maxlength="10"
                {{#if townName}}value="{{townName}}"{{/if}}>
         <small id="list-name-help" class="form-text text-muted">
-            Enter the name of your town as shown in-game
+            Enter the name of your town as shown in-game. If your town uses special characters, please enter an
+            approximate name.
         </small>
     </div>
     <div class="form-group">
@@ -32,7 +33,7 @@
     <div class="form-group">
         <label for="town-description">Description</label>
         <textarea name="town-description" class="form-control" id="town-description"
-               aria-describedby="town-description-help">{{townDescription}}</textarea>
+               aria-describedby="town-description-help" maxlength="4096">{{townDescription}}</textarea>
         <small id="town-description-help" class="form-text text-muted">
             Be as descriptive as possible. Why would someone love your town? Town descriptions are searchable by
             guests and users.
