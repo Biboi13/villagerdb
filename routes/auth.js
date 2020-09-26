@@ -26,7 +26,7 @@ const cancelRegistration = (req, res, next, redirectUrl) => {
  * COPPA Compliance error catcher.
  */
 router.get('/coppa-decline', (req, res, next) => {
-    res.render('coppa-decline', {
+    res.render('users/coppa-decline', {
         pageTitle: 'COPPA Compliance Notice'
     });
 });
@@ -90,7 +90,7 @@ router.get('/register', (req, res, next) => {
                     Object.assign(data, req.session.registrationForm);
                     delete req.session.errors;
                     delete req.session.registrationForm;
-                    res.render('register', data);
+                    res.render('users/register', data);
                 }
             })
             .catch(next);
@@ -192,7 +192,7 @@ router.get('/manage', (req, res, next) => {
             data.errors = req.session.errors;
             req.session.errors = [];
         }
-        res.render('manage-account', data);
+        res.render('users/manage', data);
     }
 });
 

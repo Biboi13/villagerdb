@@ -220,7 +220,7 @@ router.get('/:username', function (req, res, next) {
             } else {
                 data.isOwnUser = res.locals.userState.isRegistered &&
                     req.user.username === req.params.username;
-                res.render('user', data);
+                res.render('users/view', data);
             }
 
         }).catch(next);
@@ -239,7 +239,7 @@ router.get('/:username/list/:listId', (req, res, next) => {
             } else {
                 data.isOwnUser = res.locals.userState.isRegistered &&
                     req.user.username === req.params.username;
-                res.render('list', data);
+                res.render('lists/view', data);
             }
         }).catch(next);
 });
@@ -257,7 +257,7 @@ router.get('/:username/town/:townId', (req, res, next) => {
             } else {
                 data.isOwnUser = res.locals.userState.isRegistered &&
                     req.user.username === req.params.username;
-                res.render('town', data);
+                res.render('town/view', data);
             }
         }).catch(next);
 });
@@ -331,7 +331,7 @@ router.get('/:username/list/:listId/compare/:compareUsername/:compareListId', (r
                     response.shareUrl = 'https://villagerdb.com/user/' + req.params.username + '/list/'
                         + req.params.listId + '/compare/'
                         + req.params.compareUsername + '/' + req.params.compareListId;
-                    res.render('list-compare', response);
+                    res.render('lists/compare', response);
                 }
             }).catch(next);
 });

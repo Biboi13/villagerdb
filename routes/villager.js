@@ -218,7 +218,7 @@ const router = express.Router();
 router.get('/:id', function (req, res, next) {
     loadVillager(req.params.id)
         .then((data) => {
-            res.render('villager', data);
+            res.render('entity/villager', data);
         }).catch(next);
 });
 

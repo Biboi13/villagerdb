@@ -97,7 +97,7 @@ function showTownEditForm(req, res, next) {
     delete req.session.errors;
 
     if (res.locals.userState.isRegistered && !req.params.townId) {
-        res.render('edit-town', data); // for new towns
+        res.render('towns/edit', data); // for new towns
     } else if (res.locals.userState.isRegistered && req.params.townId) {
         // For existing towns - make sure it exists first.
         towns.findTownById(req.user.username, req.params.townId)
@@ -110,7 +110,7 @@ function showTownEditForm(req, res, next) {
                         data.townDescription = town.townDescription;
                         data.townTags = town.townTags.join(', ');
                     }
-                    res.render('edit-town', data);
+                    res.render('towns/edit', data);
                 } else {
                     // No such town...
                     res.redirect('/user/' + req.user.username);

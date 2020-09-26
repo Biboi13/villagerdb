@@ -176,7 +176,7 @@ router.get('/create', (req, res, next) => {
     delete req.session.errors;
 
     if (res.locals.userState.isRegistered) {
-        res.render('create-list', data);
+        res.render('lists/create', data);
     } else {
         res.redirect('/login'); // create an account to continue
     }
@@ -223,7 +223,7 @@ router.get('/import', (req, res, next) => {
     }
 
     if (res.locals.userState.isRegistered) {
-        res.render('import-list', data);
+        res.render('lists/import', data);
     } else {
         res.redirect('/login'); // create an account to continue
     }
@@ -297,7 +297,7 @@ router.get('/rename/:listId', (req, res, next) => {
             .then((list) => {
                 if (list) {
                     data.listName = list.name;
-                    res.render('rename-list', data);
+                    res.render('lists/rename', data);
                 } else {
                     // No such list...
                     res.redirect('/user/' + req.user.username);

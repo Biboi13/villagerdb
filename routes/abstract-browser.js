@@ -101,7 +101,7 @@ function browse(res, next, pageNumber, urlPrefix, pageTitle, userQueries, fixedQ
                     res.redirect(302, data.result.results[0].url);
                 } else {
                     // Show the browser.
-                    res.render('browser', data);
+                    res.render('entity/browser', data);
                 }
             }
         })

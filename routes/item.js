@@ -212,7 +212,7 @@ const router = express.Router();
 router.get('/:id', function (req, res, next) {
     loadItem(req.params.id)
         .then((data) => {
-            res.render('item', data);
+            res.render('entity/item', data);
         }).catch(next);
 });
 
