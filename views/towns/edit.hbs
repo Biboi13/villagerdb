@@ -50,29 +50,17 @@
     </div>
     <h2>Images</h2>
     {{#unless townId}}
-        <p>Upload images that encourage people to visit your island! You can upload up to six.</p>
-        <div class="row">
-            <div class="col-12 col-md-4">
-                {{> file-upload id="file1" name="primary-image" description="Primary image (required)" }}
+        <p>Upload an image that encourage people to visit your island!</p>
+        {{> file-upload id="file1" name="primary-image" description="Town image (required)" }}
+    {{else}}
+        <div class="row mb-2">
+            <div class="col-12 col-md-2 text-center mb-2">
+                <img class="img-fluid" src="/images/towns/thumb/{{image}}" alt="Town image" />
             </div>
-            <div class="col-12 col-md-4">
-                {{> file-upload id="file2" name="file[]" description="Second image"}}
-            </div>
-            <div class="col-12 col-md-4">
-                {{> file-upload id="file3" name="file[]" description="Third image"}}
-            </div>
-            <div class="col-12 col-md-4">
-                {{> file-upload id="file4" name="file[]" description="Fourth image"}}
-            </div>
-            <div class="col-12 col-md-4">
-                {{> file-upload id="file5" name="file[]" description="Fifth image"}}
-            </div>
-            <div class="col-12 col-md-4">
-                {{> file-upload id="file6" name="file[]" description="Sixth image"}}
+            <div class="col-12 col-md-10">
+                {{> file-upload id="file1" name="primary-image" description="Replace image" }}
             </div>
         </div>
-    {{else}}
-        <p>Existing town logic needs to go here...</p>
     {{/unless}}
     <button type="submit" name="submit" class="btn btn-primary">Submit</button>
 </form>

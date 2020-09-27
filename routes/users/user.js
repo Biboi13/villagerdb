@@ -28,7 +28,6 @@ async function loadUser(username) {
     userTowns.sort(format.townSortComparator);
     for (let t of userTowns) {
         t.townTags = t.townTags.join(', ');
-        t.primaryImage = t.images[0];
     }
     
     // Build result out.

@@ -26,10 +26,10 @@ class Towns {
      * @param townAddress the address of the town
      * @param townDescription the description of the town
      * @param townTags tags for the town
-     * @param images array of image filenames for the town
+     * @param image name of image file for town
      * @returns {Promise<*>}
      */
-    async createTown(username, townId, townName, townAddress, townDescription, townTags, images) {
+    async createTown(username, townId, townName, townAddress, townDescription, townTags, image) {
         const villagerDb = await this.db.get();
         await villagerDb.collection(ENTITY_COLLECTION_NAME).insertOne({
             username: username,
@@ -38,7 +38,8 @@ class Towns {
             townAddress: townAddress,
             townDescription: townDescription,
             townTags: townTags,
-            images: images
+            image: image,
+            createdAt: new Date()
         });
 
         // For delayed indexer
@@ -51,7 +52,7 @@ class Towns {
             townAddress: townAddress,
             townDescription: townDescription,
             townTags: townTags,
-            images: images
+            image: image
         });
     }
 
@@ -64,10 +65,21 @@ class Towns {
      * @param townAddress the new address of the town
      * @param townDescription the new description of the town
      * @param townTags new tags for the town
-     * @param images array of image filenames for the town
+     * @param image name of image file for town
      * @returns {Promise<*>}
      */
-    async saveTown(username, townId, townName, townAddress, townDescription, townTags, images) {
+    async saveTown(username, townId, townName, townAddress, townDescription, townTags, image) {
+        const toSet = {
+            townName: townName,
+            townAddress: townAddress,
+            townDescription: townDescription,
+            townTags: townTags,
+            updatedAt: new Date()
+        };
+        if (image) {
+            toSet.image = image; // do not unset to undefined
+        }
+
         const villagerDb = await this.db.get();
         await villagerDb.collection(ENTITY_COLLECTION_NAME).updateOne(
             {
@@ -75,13 +87,7 @@ class Towns {
                 townId: townId
             },
             {
-                $set: {
-                    townName: townName,
-                    townAddress: townAddress,
-                    townDescription: townDescription,
-                    townTags: townTags,
-                    images: images
-            }
+                $set: toSet
         });
 
         // For delayed indexer
@@ -94,7 +100,7 @@ class Towns {
             townAddress: townAddress,
             townDescription: townDescription,
             townTags: townTags,
-            images: images
+            image: image
         });
     }
 
