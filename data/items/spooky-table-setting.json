@@ -1,0 +1,25 @@
+{
+  "id": "spooky-table-setting",
+  "name": "Spooky Table Setting",
+  "games": {
+    "nh": {
+      "orderable": false,
+      "sellPrice": {
+        "currency": "bells",
+        "value": 1650
+      },
+      "recipe": {
+        "orange-pumpkin": 1,
+        "iron-nugget": 1,
+        "clay": 1
+      },
+      "variations": {
+        "orange": "Orange",
+        "yellow": "Yellow",
+        "green": "Green",
+        "white": "White"
+      }
+    }
+  },
+  "category": "Furniture"
+}

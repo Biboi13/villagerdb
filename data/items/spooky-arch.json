@@ -1,0 +1,25 @@
+{
+  "id": "spooky-arch",
+  "name": "Spooky Arch",
+  "games": {
+    "nh": {
+      "orderable": false,
+      "sellPrice": {
+        "currency": "bells",
+        "value": 4500
+      },
+      "recipe": {
+        "orange-pumpkin": 10,
+        "hardwood": 10,
+        "clay": 3
+      },
+      "variations": {
+        "orange": "Orange",
+        "yellow": "Yellow",
+        "green": "Green",
+        "white": "White"
+      }
+    }
+  },
+  "category": "Furniture"
+}

@@ -1,0 +1,24 @@
+{
+  "id": "spooky-scarecrow",
+  "name": "Spooky Scarecrow",
+  "games": {
+    "nh": {
+      "orderable": false,
+      "sellPrice": {
+        "currency": "bells",
+        "value": 1300
+      },
+      "recipe": {
+        "orange-pumpkin": 3,
+        "wood": 4
+      },
+      "variations": {
+        "orange": "Orange",
+        "yellow": "Yellow",
+        "green": "Green",
+        "white": "White"
+      }
+    }
+  },
+  "category": "Furniture"
+}

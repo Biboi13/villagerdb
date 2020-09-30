@@ -1,0 +1,25 @@
+{
+  "id": "spooky-standing-lamp",
+  "name": "Spooky Standing Lamp",
+  "games": {
+    "nh": {
+      "orderable": false,
+      "sellPrice": {
+        "currency": "bells",
+        "value": 1450
+      },
+      "recipe": {
+        "orange-pumpkin": 3,
+        "hardwood": 5,
+        "clay": 1
+      },
+      "variations": {
+        "orange": "Orange",
+        "yellow": "Yellow",
+        "green": "Green",
+        "white": "White"
+      }
+    }
+  },
+  "category": "Furniture"
+}

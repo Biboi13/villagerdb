@@ -1,0 +1,14 @@
+{
+  "id": "pumpkin-start",
+  "name": "Pumpkin Start",
+  "games": {
+    "nh": {
+      "orderable": false,
+      "sellPrice": {
+        "currency": "bells",
+        "value": 70
+      }
+    }
+  },
+  "category": "Fruit"
+}

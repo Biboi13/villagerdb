@@ -1,0 +1,23 @@
+{
+  "id": "spooky-tower",
+  "name": "Spooky Tower",
+  "games": {
+    "nh": {
+      "orderable": false,
+      "sellPrice": {
+        "currency": "bells",
+        "value": 2450
+      },
+      "recipe": {
+        "orange-pumpkin": 7
+      },
+      "variations": {
+        "orange": "Orange",
+        "yellow": "Yellow",
+        "green": "Green",
+        "white": "White"
+      }
+    }
+  },
+  "category": "Furniture"
+}

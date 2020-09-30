@@ -1,0 +1,27 @@
+{
+  "id": "flashy-animal-costume",
+  "name": "Flashy Animal Costume",
+  "games": {
+    "nh": {
+      "sellPrice": {
+        "currency": "bells",
+        "value": 425
+      },
+      "buyPrices": [
+        {
+          "currency": "bells",
+          "value": 1700
+        }
+      ],
+      "variations": {
+        "orange": "Orange",
+        "purple": "Purple",
+        "white": "White",
+        "green": "Green",
+        "red": "Red",
+        "black": "Black"
+      }
+    }
+  },
+  "category": "Dresses"
+}

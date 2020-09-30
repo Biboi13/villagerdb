@@ -1,0 +1,27 @@
+{
+  "id": "horizontal-striped-tights",
+  "name": "Horizontal-striped Tights",
+  "games": {
+    "nh": {
+      "sellPrice": {
+        "currency": "bells",
+        "value": 180
+      },
+      "buyPrices": [
+        {
+          "currency": "bells",
+          "value": 720
+        }
+      ],
+      "variations": {
+        "orange": "Orange",
+        "purple": "Purple",
+        "white": "White",
+        "green": "Green",
+        "red": "Red",
+        "black": "Black"
+      }
+    }
+  },
+  "category": "Socks"
+}

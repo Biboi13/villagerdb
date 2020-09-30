@@ -1,0 +1,18 @@
+{
+  "id": "spooky-wand",
+  "name": "Spooky Wand",
+  "games": {
+    "nh": {
+      "orderable": false,
+      "sellPrice": {
+        "currency": "bells",
+        "value": 4300
+      },
+      "recipe": {
+        "spooky-lantern": 1,
+        "star-fragment": 3
+      }
+    }
+  },
+  "category": "Tools"
+}

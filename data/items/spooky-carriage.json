@@ -1,0 +1,27 @@
+{
+  "id": "spooky-carriage",
+  "name": "Spooky Carriage",
+  "games": {
+    "nh": {
+      "orderable": false,
+      "sellPrice": {
+        "currency": "bells",
+        "value": 35700
+      },
+      "recipe": {
+        "orange-pumpkin": 30,
+        "hardwood": 20,
+        "wood": 20,
+        "softwood": 20,
+        "iron-nugget": 10
+      },
+      "variations": {
+        "orange": "Orange",
+        "yellow": "Yellow",
+        "green": "Green",
+        "white": "White"
+      }
+    }
+  },
+  "category": "Furniture"
+}

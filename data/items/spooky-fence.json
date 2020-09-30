@@ -1,0 +1,18 @@
+{
+  "id": "spooky-fence",
+  "name": "Spooky Fence",
+  "games": {
+    "nh": {
+      "orderable": false,
+      "sellPrice": {
+        "currency": "bells",
+        "value": 585
+      },
+      "recipe": {
+        "orange-pumpkin": 3,
+        "iron-nugget": 5
+      }
+    }
+  },
+  "category": "Furniture"
+}

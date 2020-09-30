@@ -1,0 +1,19 @@
+{
+  "id": "ring-con",
+  "name": "Ring-Con",
+  "games": {
+    "nh": {
+      "sellPrice": {
+        "currency": "bells",
+        "value": 1237
+      },
+      "buyPrices": [
+        {
+          "currency": "bells",
+          "value": 4950
+        }
+      ]
+    }
+  },
+  "category": "Furniture"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "white-pumpkin",
+  "name": "White Pumpkin",
+  "games": {
+    "nh": {
+      "orderable": false,
+      "sellPrice": {
+        "currency": "bells",
+        "value": 350
+      }
+    }
+  },
+  "category": "Fruit"
+}

@@ -1,0 +1,23 @@
+{
+  "id": "spooky-lantern",
+  "name": "Spooky Lantern",
+  "games": {
+    "nh": {
+      "orderable": false,
+      "sellPrice": {
+        "currency": "bells",
+        "value": 1400
+      },
+      "recipe": {
+        "orange-pumpkin": 4
+      },
+      "variations": {
+        "orange": "Orange",
+        "yellow": "Yellow",
+        "green": "Green",
+        "white": "White"
+      }
+    }
+  },
+  "category": "Furniture"
+}

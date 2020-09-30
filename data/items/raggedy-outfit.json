@@ -1,0 +1,27 @@
+{
+  "id": "raggedy-outfit",
+  "name": "Raggedy Outfit",
+  "games": {
+    "nh": {
+      "sellPrice": {
+        "currency": "bells",
+        "value": 375
+      },
+      "buyPrices": [
+        {
+          "currency": "bells",
+          "value": 1500
+        }
+      ],
+      "variations": {
+        "orange": "Orange",
+        "purple": "Purple",
+        "white": "White",
+        "green": "Green",
+        "red": "Red",
+        "black": "Black"
+      }
+    }
+  },
+  "category": "Dresses"
+}

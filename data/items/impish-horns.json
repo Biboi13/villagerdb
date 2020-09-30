@@ -1,0 +1,27 @@
+{
+  "id": "impish-horns",
+  "name": "Impish Horns",
+  "games": {
+    "nh": {
+      "sellPrice": {
+        "currency": "bells",
+        "value": 200
+      },
+      "buyPrices": [
+        {
+          "currency": "bells",
+          "value": 800
+        }
+      ],
+      "variations": {
+        "orange": "Orange",
+        "purple": "Purple",
+        "white": "White",
+        "green": "Green",
+        "red": "Red",
+        "black": "Black"
+      }
+    }
+  },
+  "category": "Hats"
+}
