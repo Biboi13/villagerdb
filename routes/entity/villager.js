@@ -1,7 +1,7 @@
 const express = require('express');
 const moment = require('moment');
-const format = require('../helpers/format.js');
-const villagers = require('../db/entity/villagers');
+const format = require('../../helpers/format.js');
+const villagers = require('../../db/entity/villagers');
 
 /**
  * Format a villager for user display.
@@ -63,23 +63,27 @@ function formatVillager(villager) {
 }
 
 /**
+ * Get the most recent game a villager was in
+ *
+ * @param villager
+ * @returns {*}
+ */
+function findLatestGameId(villager) {
+    for (let gameId in format.games) {
+        if (villager.games[gameId]) {
+            return gameId;
+        }
+    }
+}
+
+/**
  * Generate a sentence for the given villager.
  *
  * @param villager
  * @param formattedVillager
  */
 function generateParagraph(villager, formattedVillager) {
-    // Find the latest game they are in.
-    let gameData = undefined;
-    for (let gameId in format.games) {
-        if (villager.games[gameId]) {
-            gameData = villager.games[gameId];
-            break;
-        }
-    }
-    if (!gameData) {
-        return '';
-    }
+    const gameData = villager.games[findLatestGameId(villager)];
 
     // Properties
     const name = villager.name;
@@ -209,7 +213,18 @@ async function loadVillager(id) {
     result.id = villager.id;
     result.pageTitle = villager.name;
     result.collab = villager.collab;
-    
+    const latestGameId = findLatestGameId(villager);
+    result.breadcrumb = [
+        {
+            label: 'Villagers (' + format.games[latestGameId].title + ')',
+            url: '/villagers?game=' + encodeURIComponent(format.games[latestGameId].id)
+        },
+        {
+            label: villager.name,
+            isActive: true
+        }
+    ];
+
     // Quotes
     result.quotes = getQuotes(villager, result);
     result.hasQuotes = result.quotes.length > 0;
@@ -237,7 +252,7 @@ const router = express.Router();
 router.get('/:id', function (req, res, next) {
     loadVillager(req.params.id)
         .then((data) => {
-            res.render('villager', data);
+            res.render('entity/villager', data);
         }).catch(next);
 });
 

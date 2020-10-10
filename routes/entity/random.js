@@ -1,6 +1,6 @@
-const villagers = require('../db/entity/villagers');
-const items = require('../db/entity/items');
-const urlHelper = require('../helpers/url');
+const villagers = require('../../db/entity/villagers');
+const items = require('../../db/entity/items');
+const urlHelper = require('../../helpers/url');
 
 /**
  * Make a random number that is at most max. This is not cryptographically secure in any way, but we don't need that.
