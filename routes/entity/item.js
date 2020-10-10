@@ -182,9 +182,20 @@ async function loadItem(id) {
     result.games = Object.values(result.gamesData);
 
     // Some extra metadata the template needs.
+    const latestGameId = format.findLatestGameId(item);
     result.pageTitle = item.name;
     result.category = item.category;
-
+    result.breadcrumb = [
+        {
+            label: item.category + ' (' + format.games[latestGameId].title + ')',
+            url: '/search?type=item&game=' + encodeURIComponent(format.games[latestGameId].id)
+                + '&category=' + encodeURIComponent(item.category)
+        },
+        {
+            label: item.name,
+            isActive: true
+        }
+    ];
     // Images.
     result.image = item.image;
     result.serializedImages = JSON.stringify(item.image);
