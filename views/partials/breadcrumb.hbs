@@ -1,17 +1,10 @@
 {{#if data}}
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="/">Home</a>
-            </li>
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
             {{#each data}}
                 <li class="breadcrumb-item {{#if isActive}}active{{/if}}"
-                    {{#if isActive}}aria-current="page"{{/if}}>
-                    {{#if isActive}}
-                        {{label}}
-                    {{else}}
-                        <a href="{{url}}">{{label}}</a>
-                    {{/if}}
+                    {{#if isActive}}aria-current="page"{{/if}}>{{#if isActive}}{{label}}{{else}}<a href="{{url}}">{{label}}</a>{{/if}}
                 </li>
             {{/each}}
         </ol>
