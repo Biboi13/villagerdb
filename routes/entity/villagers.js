@@ -8,12 +8,12 @@ const express = require('express');
  *
  * @type {browse}
  */
-const browse = require('./abstract-browser');
+const browse = require('../abstract-browser');
 
 /**
  * Sanitizer.
  */
-const sanitize = require('../helpers/sanitize');
+const sanitize = require('../../helpers/sanitize');
 
 /**
  * Invokes the browser.
