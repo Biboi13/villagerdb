@@ -330,6 +330,7 @@ router.get('/import', (req, res, next) => {
     data.pageTitle = 'Import from CatalogScanner';
     data.errors = req.session.errors;
     data.listNameLength = maxListNameLength;
+    
     delete req.session.errors;
 
     // Render pre-defined url if it behaves known alphabet

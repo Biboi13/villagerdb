@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const users = require('../db/entity/users');
-const lists = require('../db/entity/lists');
-const villagers = require('../db/entity/villagers');
-const items = require('../db/entity/items');
-const format = require('../helpers/format');
-const consts = require('../helpers/consts');
+const users = require('../../db/entity/users');
+const lists = require('../../db/entity/lists');
+const villagers = require('../../db/entity/villagers');
+const items = require('../../db/entity/items');
+const format = require('../../helpers/format');
+const consts = require('../../helpers/consts');
 
 /**
  * Reserved name for uncategorized lists.
@@ -54,6 +54,13 @@ async function loadUser(username) {
     result.username = user.username;
     result.hasLists = user.lists.length > 0;
     result.shareUrl = 'https://villagerdb.com/user/' + user.username;
+    result.breadcrumb = [
+        {
+            label: user.username +'\'s profile',
+            isActive: true
+        }
+    ];
+
     return result;
 }
 
@@ -118,6 +125,16 @@ async function loadList(username, listId, loggedInUser) {
     // SEO
     result.pageTitle = list.name + ' by ' + username;
     result.pageDescription = 'View ' + list.name + ', a list by ' + username + ' containing ' + result.countText;
+    result.breadcrumb = [
+        {
+            label: username + '\'s profile',
+            url: '/user/' + username
+        },
+        {
+            label: list.name,
+            isActive: true
+        }
+    ];
 
     // Handle logged in users lists for compare button
     if (typeof loggedInUser === 'object' && loggedInUser.id && loggedInUser.username) {
@@ -297,6 +314,20 @@ router.get('/:username/list/:listId/compare/:compareUsername/:compareListId', (r
                     response.shareUrl = 'https://villagerdb.com/user/' + req.params.username + '/list/'
                         + req.params.listId + '/compare/'
                         + req.params.compareUsername + '/' + req.params.compareListId;
+                    response.breadcrumb = [
+                        {
+                            label: req.params.username + '\'s profile',
+                            url: '/user/' + req.params.username
+                        },
+                        {
+                            label: response.listName,
+                            url: '/user/' + req.params.username + '/list/' + req.params.listId
+                        },
+                        {
+                            label: 'Compare to ' + response.otherListName,
+                            isActive: true
+                        }
+                    ];
                     res.render('list/compare', response);
                 }
             }).catch(next);
