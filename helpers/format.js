@@ -271,3 +271,18 @@ function listItemSortComparator(a, b) {
     }
 }
 module.exports.listItemSortComparator = listItemSortComparator;
+
+/**
+ * Get the most recent game an entity was in
+ *
+ * @param entity item or villager
+ * @returns {*}
+ */
+function findLatestGameId(entity) {
+    for (let gameId in games) {
+        if (entity.games[gameId]) {
+            return gameId;
+        }
+    }
+}
+module.exports.findLatestGameId = findLatestGameId;
